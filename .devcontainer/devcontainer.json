@@ -1,0 +1,8 @@
+{
+  "name": "Keystone",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "postCreateCommand": "npm install",
+  "postStartCommand": "nohup npm run dev > /tmp/keystone.log 2>&1 &",
+  "forwardPorts": [5173],
+  "portsAttributes": { "5173": { "label": "Keystone", "onAutoForward": "openBrowser" } }
+}

@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ground: #f6f7f6; --surface: #fff; --raised: #f4f6f8; --active: #ebedee;
+  --border: #e8eaec; --rule: #f0f1f2; --control: #cdced1;
+  --text: #131416; --muted: #5d5f60; --accent: #1b6c80;
+  --positive: #1e7b4f; --negative: #c4242a;
+  --pill-positive-bg: #dcfae5; --pill-positive-ink: #04250e;
+  --pill-negative-bg: #ffedea; --pill-negative-ink: #831c1e;
+  --pill-warning-bg: #fffbeb; --pill-warning-ink: #92400e;
+  --primary: #1d1f20; --radius-card: 8px; --radius-control: 6px; --gap: 24px;
+}
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0; background: var(--ground); color: var(--text);
+  font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; font-size: 14px; line-height: 20px;
+  font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased;
+}
+input, textarea, button { font: inherit; color: inherit; font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* react-flow, flattened to the brief: no shadows, 1px controls, hidden handles */
+.react-flow { --xy-edge-stroke-default: var(--control); --xy-background-color: transparent; background: transparent; }
+.react-flow__edge-path { stroke: var(--control); stroke-width: 1; }
+.react-flow__handle { opacity: 0; pointer-events: none; }
+.react-flow__controls { box-shadow: none !important; border: 1px solid var(--border); border-radius: var(--radius-control); overflow: hidden; }
+.react-flow__controls-button { background: var(--surface); border-bottom: 1px solid var(--border); fill: var(--muted); }
+.react-flow__controls-button:hover { background: var(--raised); }
+.react-flow__attribution { background: transparent !important; font-size: 12px; }
+.react-flow__attribution a { color: var(--muted); }
