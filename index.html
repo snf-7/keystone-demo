@@ -7,6 +7,19 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // If the app fails to start, say why on screen instead of leaving a blank page.
+      (function () {
+        function show(msg) {
+          var d = document.getElementById('boot-error');
+          if (!d) { d = document.createElement('pre'); d.id = 'boot-error'; d.style.cssText = 'margin:16px;padding:12px;border:1px solid #c4242a;white-space:pre-wrap;direction:ltr;font:12px monospace;color:#131416;background:#fff'; document.body.appendChild(d); }
+          d.textContent += msg + '\n';
+        }
+        window.addEventListener('error', function (e) { show('Error: ' + (e.message || (e.target && (e.target.src || e.target.href)) || 'resource failed to load')); }, true);
+        window.addEventListener('unhandledrejection', function (e) { show('Rejection: ' + (e.reason && e.reason.message || e.reason)); });
+        setTimeout(function () { var r = document.getElementById('root'); if (r && !r.children.length) show('Keystone did not start (script: ' + location.href + ')'); }, 4000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

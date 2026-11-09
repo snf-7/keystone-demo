@@ -8,11 +8,13 @@ import '@xyflow/react/dist/style.css';
 import './index.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 import App from './App';
+import ErrorBoundary from './ErrorBoundary';
 
-const Router = import.meta.env.VITE_STATIC === '1' ? HashRouter : BrowserRouter; // Pages has no SPA fallback
+// Pages has no SPA fallback -> hash routes; the single-file embed has no usable URL -> in-memory routes
+const Router = import.meta.env.VITE_MEMORY === '1' ? MemoryRouter : import.meta.env.VITE_STATIC === '1' ? HashRouter : BrowserRouter;
 
 createRoot(document.getElementById('root')!).render(
-  <React.StrictMode><Router><App /></Router></React.StrictMode>,
+  <React.StrictMode><ErrorBoundary><Router><App /></Router></ErrorBoundary></React.StrictMode>,
 );
