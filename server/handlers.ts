@@ -1,6 +1,7 @@
 import { draftDecision, rankCandidates, type Org } from './analysis.js';
 import { readyCount } from './bench.js';
 import { COMPANY } from './db/seedData.js';
+import { estimateSaudization } from './logic/nitaqat.js';
 import { analyzeGaps } from './logic/gaps.js';
 import { buildChain } from './logic/chain.js';
 import { compareInternalExternal } from './logic/cost.js';
@@ -54,6 +55,9 @@ export function getRadar(): Result {
       critical_count: critical.length,
       critical_without_successor: critical.filter((p) => p.ready === 0).length,
       critical_monthly_cost_sar: critical.reduce((s, p) => s + p.monthly_vacancy_cost_sar, 0),
+      one_successor_count: out.filter((p) => !p.is_critical && p.ready === 1).length,
+      succession_roles: out.filter((p) => p.level > 1).length,
+      saudization: estimateSaudization(org.employees),
     },
   });
 }

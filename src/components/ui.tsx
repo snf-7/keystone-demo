@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 export function PageHeader({ title, line }: { title: string; line: ReactNode }) {
   return (
-    <header className="mb-gap">
+    <header className="mb-gap shrink-0">
       <h1 className="text-title m-0">{title}</h1>
       <p className="text-body text-muted m-0 mt-1">{line}</p>
     </header>

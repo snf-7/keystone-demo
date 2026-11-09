@@ -21,6 +21,20 @@ export default function Radar() {
   return (
     <>
       <PageHeader title="رادار الخلافة" line={line} />
+      <section aria-label="مؤشرات الخلافة" className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-border border border-border rounded-card overflow-hidden mb-gap shrink-0">
+        {[
+          { label: 'مناصب حرجة بلا بديل جاهز', value: String(s.critical_without_successor), unit: `من ${s.critical_count}`, caption: s.critical_without_successor === s.critical_count ? 'لا يغطي أيٌّ منها بديل داخلي' : `${s.critical_count - s.critical_without_successor} منها لها بديل جاهز` },
+          { label: 'تكلفة الشغور الشهرية', value: fmt(s.critical_monthly_cost_sar), unit: 'ر.س', caption: `مجموع ${s.critical_count} مناصب حرجة` },
+          { label: 'مناصب ببديل واحد فقط', value: String(s.one_successor_count), unit: `من ${s.succession_roles}`, caption: 'مناصب غير حرجة لها بديل جاهز واحد' },
+          { label: 'السعودة الحالية', value: s.saudization.percentage.toFixed(1), unit: '%', caption: `تقديري: ${s.saudization.countedSaudis} من ${s.saudization.headcount} موظفاً محتسباً` },
+        ].map((k) => (
+          <div key={k.label} className="bg-surface px-4 py-4 min-w-0">
+            <div className="text-meta text-muted">{k.label}</div>
+            <Num value={k.value} unit={k.unit} className="text-kpi block" />
+            <div className="text-meta text-muted">{k.caption}</div>
+          </div>
+        ))}
+      </section>
       <div className="flex flex-col sm:flex-row gap-gap sm:flex-1 sm:min-h-0 sm:items-stretch max-sm:flex-none">
         <section className="relative sm:flex-1 min-w-0 bg-surface border border-border rounded-card overflow-hidden h-[60vh] max-sm:shrink-0 sm:h-auto sm:min-h-[420px]" aria-label="الهيكل التنظيمي">
           <OrgChart positions={radar.positions} focusId={focus} onSelect={setFocus} />

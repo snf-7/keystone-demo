@@ -18,7 +18,11 @@ export interface RadarPosition {
 }
 export interface RadarData {
   company: string; positions: RadarPosition[];
-  summary: { headcount: number; critical_count: number; critical_without_successor: number; critical_monthly_cost_sar: number };
+  summary: {
+    headcount: number; critical_count: number; critical_without_successor: number; critical_monthly_cost_sar: number;
+    one_successor_count: number; succession_roles: number;
+    saudization: { percentage: number; countedSaudis: number; headcount: number };
+  };
 }
 
 /** Static build (GitHub Pages): run the same handlers in the browser, no server. */

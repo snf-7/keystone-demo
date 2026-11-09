@@ -76,7 +76,7 @@ export default function Shell() {
   return (
     <div className="h-full grid grid-cols-1 grid-rows-[48px_1fr] sm:grid-cols-[228px_1fr] bg-ground">
       {/* sidebar (right in RTL); on phones it collapses to a 48px bar */}
-      <aside aria-label="القائمة الرئيسية" className="relative row-start-1 sm:row-span-2 sm:p-3 flex flex-col">
+      <aside aria-label="القائمة الرئيسية" className="relative row-start-1 sm:row-span-2 sm:p-4 flex flex-col">
         <div className="h-12 sm:h-auto flex items-center justify-between px-4 sm:px-0">
           <div className="flex items-center gap-2"><Mark /><span className="text-body font-semibold" dir="ltr">Keystone</span></div>
           <button className="sm:hidden h-8 w-8 flex items-center justify-center bg-transparent border-0 rounded-control text-muted" aria-label="القائمة" aria-expanded={menu} onClick={() => setMenu(!menu)}><IconMenu /></button>
