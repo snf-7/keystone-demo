@@ -63,3 +63,24 @@ describe('nationality and gender never reach scoreCandidates', () => {
     expect(() => scoreCandidates(position, [{ ...toCandidate(e), nationality: 'saudi' } as never])).toThrow(/nationality/);
   });
 });
+
+import { analyzeGaps } from '../logic/gaps.js';
+import { analyzeVacancy, openVacancy } from '../handlers.js';
+
+describe('gap analysis and the analyze response stay blind to nationality and gender', () => {
+  it('analyzeGaps rejects a candidate that carries a protected field', () => {
+    const seed = buildSeed();
+    const e = seed.employees[0];
+    expect(() => analyzeGaps(seed.positions[1], { ...toCandidate(e), gender: 'female' } as never)).toThrow(/gender/);
+  });
+
+  it('the analyze payload sent to the client contains neither field', () => {
+    const critical = buildSeed().positions.filter((p) => p.is_critical);
+    for (const p of critical) {
+      const opened = openVacancy(p.id).body as { vacancy: { id: number } };
+      const res = analyzeVacancy(opened.vacancy.id).body;
+      expect(containsKey(res, PROTECTED_FIELDS)).toBeNull();
+      expect((res as { candidates: unknown[] }).candidates.length).toBe(3);
+    }
+  });
+});

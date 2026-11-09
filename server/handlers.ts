@@ -1,7 +1,10 @@
 import { draftDecision, rankCandidates, type Org } from './analysis.js';
 import { readyCount } from './bench.js';
 import { COMPANY } from './db/seedData.js';
-import { toCandidate } from './logic/protected.js';
+import { analyzeGaps } from './logic/gaps.js';
+import { buildChain } from './logic/chain.js';
+import { compareInternalExternal } from './logic/cost.js';
+import { assertNoProtectedFields, toCandidate } from './logic/protected.js';
 import { extractSkills } from './logic/skills.js';
 import { decisions, departments, employees, newDecisionId, newVacancyId, positions, vacancies } from './store.js';
 import type { Position } from './types.js';
@@ -74,9 +77,32 @@ export function analyzeVacancy(vacancyId: number, text?: string): Result {
   const org = loadOrg();
   const position = org.positions.find((p) => p.id === vacancy.position_id)!;
   const titleOf = new Map(org.positions.map((p) => [p.id, p.title]));
+  const strip = org.employees.map(toCandidate);
+  assertNoProtectedFields(strip); // everything below this line works on stripped candidates
+  const nameOf = new Map(org.employees.map((e) => [e.id, e.full_name]));
   const candidates = rankCandidates(position, org).map((s, i) => {
     const e = org.employees.find((x) => x.id === s.employeeId)!;
-    return { rank: i + 1, employee_id: e.id, full_name: e.full_name, current_title: titleOf.get(e.position_id), total: s.total, breakdown: s.breakdown };
+    const c = strip.find((x) => x.id === e.id)!;
+    const plan = analyzeGaps(position, c);
+    const cost = compareInternalExternal(position, c).internal;
+    const vacated = org.positions.find((p) => p.id === e.position_id)!;
+    // vacating the candidate's current role: does it have a ready internal successor?
+    const impact = vacated.level === 1 ? 'low' : (() => {
+      const n = readyCount(vacated, org.positions, strip);
+      return n === 0 ? 'high' : n === 1 ? 'medium' : 'low';
+    })();
+    const chain = buildChain(position.id, e.id, { positions: org.positions, employees: strip }).map((st) => ({
+      ...st,
+      positionTitle: titleOf.get(st.positionId),
+      employeeName: st.employeeId ? nameOf.get(st.employeeId) : null,
+    }));
+    return {
+      rank: i + 1, employee_id: e.id, full_name: e.full_name, current_title: titleOf.get(e.position_id),
+      total: s.total, breakdown: s.breakdown,
+      gaps: plan.gaps, critical_met: plan.criticalMet, ready_in_weeks: plan.readyInWeeks, plan_steps: plan.steps,
+      transfer_impact: impact, vacated_title: vacated.title,
+      cost_sar: cost.costSar, days: cost.days, chain,
+    };
   });
   return ok({ extracted_skills: extractSkills(vacancy.job_description), candidates });
 }
