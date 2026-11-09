@@ -26,7 +26,7 @@ export default function Radar() {
           <OrgChart positions={radar.positions} focusId={focus} onSelect={setFocus} />
         </section>
 
-        <aside className="w-full max-sm:shrink-0 sm:w-[360px] sm:shrink-0 bg-surface border border-border rounded-card flex flex-col">
+        <aside aria-label="المناصب الحرجة" className="w-full max-sm:shrink-0 sm:w-[360px] sm:shrink-0 bg-surface border border-border rounded-card flex flex-col">
           <div className="flex items-baseline justify-between px-4 py-4">
             <h2 className="text-section m-0">مناصب حرجة</h2>
             <span className="text-meta text-muted num">{critical.length}</span>
@@ -36,7 +36,8 @@ export default function Radar() {
               <li key={p.id} className={`px-4 py-4 border-t border-rule cursor-pointer ${focus === p.id ? 'bg-raised' : 'hover:bg-raised'}`} onClick={() => setFocus(p.id)}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <div className="text-body font-medium">{p.title}</div>
+                    <button type="button" aria-pressed={focus === p.id} title="إظهار المنصب على الرسم" onClick={(e) => { e.stopPropagation(); setFocus(p.id); }}
+                      className="p-0 bg-transparent border-0 text-start cursor-pointer text-body font-medium">{p.title}</button>
                     <div className="text-meta text-muted">{p.department_name}</div>
                   </div>
                   <Pill tone="negative">بلا بديل</Pill>

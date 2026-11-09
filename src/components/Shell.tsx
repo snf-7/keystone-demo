@@ -76,7 +76,7 @@ export default function Shell() {
   return (
     <div className="h-full grid grid-cols-1 grid-rows-[48px_1fr] sm:grid-cols-[228px_1fr] bg-ground">
       {/* sidebar (right in RTL); on phones it collapses to a 48px bar */}
-      <aside className="relative row-start-1 sm:row-span-2 sm:p-3 flex flex-col">
+      <aside aria-label="القائمة الرئيسية" className="relative row-start-1 sm:row-span-2 sm:p-3 flex flex-col">
         <div className="h-12 sm:h-auto flex items-center justify-between px-4 sm:px-0">
           <div className="flex items-center gap-2"><Mark /><span className="text-body font-semibold" dir="ltr">Keystone</span></div>
           <button className="sm:hidden h-8 w-8 flex items-center justify-center bg-transparent border-0 rounded-control text-muted" aria-label="القائمة" aria-expanded={menu} onClick={() => setMenu(!menu)}><IconMenu /></button>
@@ -91,10 +91,10 @@ export default function Shell() {
       </aside>
 
       {/* top bar */}
-      <div className="hidden sm:flex row-start-1 col-start-2 items-center justify-center relative px-4">
+      <header className="hidden sm:flex row-start-1 col-start-2 items-center justify-center relative px-4">
         <Search radar={radar} />
         <span className="absolute left-4 h-6 min-w-6 px-1 flex items-center justify-center rounded-control bg-active text-meta font-medium text-muted" dir="ltr" title="الحساب">{USER_INITIALS}</span>
-      </div>
+      </header>
 
       {/* sheet */}
       <main className="row-start-2 col-start-1 sm:col-start-2 min-h-0 overflow-auto bg-surface p-6 flex flex-col sm:border sm:border-border sm:rounded-sheet sm:ml-2 sm:mb-2 max-sm:p-4">

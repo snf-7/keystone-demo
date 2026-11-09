@@ -65,7 +65,7 @@ function Inner({ positions, focusId, onSelect }: { positions: RadarPosition[]; f
     <div ref={wrap} className="absolute inset-0" style={{ direction: 'ltr' }}>
       <ReactFlow
         nodes={nodes} edges={flowEdges} nodeTypes={nodeTypes}
-        nodesDraggable={false} nodesConnectable={false} elementsSelectable={false}
+        nodesDraggable={false} nodesConnectable={false} elementsSelectable={false} nodesFocusable={false} edgesFocusable={false}
         minZoom={0.3} maxZoom={1.2} zoomOnDoubleClick={false} preventScrolling={false}
         onInit={placeViewport}
         onNodeClick={(_, n) => onSelect(Number(n.id))}

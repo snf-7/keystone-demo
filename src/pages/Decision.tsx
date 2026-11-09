@@ -76,7 +76,7 @@ export default function Decision() {
         <section className="bg-surface border border-border rounded-card p-6">
           <h2 className="text-section m-0">سلسلة الترقية</h2>
           <p className="text-meta text-muted m-0 mt-1 mb-4">كل حلقة تُخلي منصبها ليشغله من يليها، وتنتهي بتعيين جديد في أدنى مستوى.</p>
-          <div className="flex items-stretch gap-3 overflow-x-auto pb-2">
+          <div role="region" aria-label="مراحل سلسلة الترقية" tabIndex={0} className="flex items-stretch gap-3 overflow-x-auto pb-2">
             {d.chain.map((s, i) => (
               <div key={i} className="flex items-center gap-3 shrink-0">
                 {s.newHire ? (
